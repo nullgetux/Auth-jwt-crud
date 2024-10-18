@@ -20,11 +20,5 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); // Use user routes
 
-// Sync database and start server sync({force: true}) for update table (data ilang semua)
-sequelize.sync().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
-}).catch(error => {
-    console.error('Unable to connect to the database:', error);
-});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

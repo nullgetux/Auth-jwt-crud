@@ -4,7 +4,6 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-    
   },
   "keywords": [],
   "author": "",
@@ -19,7 +18,8 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
     "nodemon": "^3.1.7",
-    "sequelize": "^6.37.4"
+    "sequelize": "^6.37.4",
+    "sequelize-cli": "^6.6.2"
   },
   "description": ""
 }

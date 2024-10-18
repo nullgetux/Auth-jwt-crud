@@ -5,6 +5,7 @@ const cors = require('cors');
 const sequelize = require('./config/config');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const barangRoutes = require('./routes/barang');
 
 require('dotenv').config();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); // Use user routes
+app.use('/api/barang', barangRoutes);
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

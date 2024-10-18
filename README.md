@@ -19,3 +19,15 @@ PORT=3000
 ## Start Server
 
 npm run dev / nodemon server
+
+## Create model
+npx sequelize-cli model:generate --name name --attributes name:typedata
+
+## Migration
+npx sequelize-cli db:migrate
+
+## Create Seed
+npx sequelize-cli seed:generate --name name
+
+## Run seed
+npx sequelize-cli db:seed:all

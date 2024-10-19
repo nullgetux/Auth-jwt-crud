@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Users.belongsTo(models.Roles, { foreignKey: 'roleId', as: 'role' });
     }
   }
   Users.init({
@@ -22,10 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Users',
   });
-  User.associate = function(models) {
-    // Each user belongs to a role
-    User.belongsTo(models.Role, { foreignKey: 'roleId', as: 'role' });
-  };
+    
   
   return Users;
 };

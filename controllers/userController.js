@@ -1,6 +1,6 @@
 // controllers/userController.js
 const bcrypt = require('bcrypt');
-const {User} = require('../models');
+const {Users, Roles} = require('../models');
 
 const saltRounds = 10;
 
@@ -10,11 +10,12 @@ const userController = {
         const { nama, password, email } = req.body;
         try {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
-            const user = await User.create(
+            const user = await Users.create(
                 { 
                     nama, 
                     password: hashedPassword, 
-                    email 
+                    email,
+                    roleId
                 });
             res.status(201).json(
                 { 
@@ -33,7 +34,7 @@ const userController = {
     // Read All Users
     getAllUsers: async (req, res) => {
         try {
-            const users = await User.findAll();
+            const users = await Users.findAll();
             res.status(200).json(users);
         } catch (error) {
             res.status(400).json({ error: 'Failed to retrieve users', details: error.message });
@@ -44,7 +45,7 @@ const userController = {
     getUserById: async (req, res) => {
         const { id } = req.params;
         try {
-            const user = await User.findByPk(id);
+            const user = await Users.findByPk(id);
             if (!user) {
                 return res.status(404).json(
                     { 
@@ -79,6 +80,7 @@ const userController = {
             }
             user.nama = nama || user.nama;
             user.email = email || user.email;
+            user.roleId = roleId || user.roleId;
 
             await user.save();
             res.status(200).json(
@@ -99,7 +101,7 @@ const userController = {
     deleteUser: async (req, res) => {
         const { id } = req.params;
         try {
-            const user = await User.findByPk(id);
+            const user = await Users.findByPk(id);
             if (!user) {
                 return res.status(404).json(
                     { 

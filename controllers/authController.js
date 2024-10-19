@@ -1,7 +1,7 @@
 // controllers/authController.js
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {User} = require('../models');
+const {Users, Roles} = require('../models');
 
 const saltRounds = 10;
 
@@ -11,7 +11,7 @@ const authController = {
         const { nama, password, email } = req.body;
         try {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
-            const user = await User.create(
+            const user = await Users.create(
                 { 
                     nama, 
                     password: hashedPassword, 
@@ -34,35 +34,25 @@ const authController = {
     login: async (req, res) => {
         const { email, password } = req.body;
         try {
-            const user = await User.findOne(
-                { 
-                    where: { email } 
-                });
+            // Query the user based on email
+            const user = await Users.findOne({ where: { email } });
             if (!user) {
-                return res.status(401).json(
-                    { 
-                        error: 'Invalid credentials' }
-                    );
+                return res.status(401).json({ error: 'Invalid credentials' });
             }
+             // Compare password
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
-                return res.status(401).json(
-                    { 
-                        error: 'Invalid credentials' 
-                    });
+                return res.status(401).json({ error: 'Invalid credentials' });
             }
-            const token = jwt.sign({ id: user.id, email: user.email, role: user.role_id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.status(200).json(
-                { 
-                    message: 'Login successful', 
-                    token 
-                });
+           // Generate JWT token
+            const token = jwt.sign(
+                { id: user.id, email: user.email, roleId: user.roleId },
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' }
+            );
+            return res.status(200).json({ message: 'Login successful', token });
         } catch (error) {
-            res.status(400).json(
-                { 
-                    error: 'Login failed', 
-                    details: error.message 
-                });
+            return res.status(400).json({ error: 'Login failed', details: error.message });
         }
     },
 

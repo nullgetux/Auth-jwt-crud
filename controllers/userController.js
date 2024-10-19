@@ -7,12 +7,12 @@ const saltRounds = 10;
 const userController = {
     // Create User
     createUser: async (req, res) => {
-        const { username, password, email } = req.body;
+        const { nama, password, email } = req.body;
         try {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const user = await User.create(
                 { 
-                    username, 
+                    nama, 
                     password: hashedPassword, 
                     email 
                 });
@@ -64,7 +64,7 @@ const userController = {
     // Update User
     updateUser: async (req, res) => {
         const { id } = req.params;
-        const { username, password, email } = req.body;
+        const { nama, password, email } = req.body;
         try {
             const user = await User.findByPk(id);
             if (!user) {
@@ -77,7 +77,7 @@ const userController = {
             if (password) {
                 user.password = await bcrypt.hash(password, saltRounds);
             }
-            user.username = username || user.username;
+            user.nama = nama || user.nama;
             user.email = email || user.email;
 
             await user.save();

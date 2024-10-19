@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Roles.hasMany(models.Users, { foreignKey: 'roleId', as: 'users' });
     }
   }
   Roles.init({
@@ -19,10 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Roles',
   });
-  Role.associate = function(models) {
-    // One role can have many users
-    Role.hasMany(models.User, { foreignKey: 'roleId', as: 'users' });
-  };
 
   return Roles;
 };

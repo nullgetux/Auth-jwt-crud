@@ -11,10 +11,10 @@ const router = express.Router();
 router.post('/', verifyToken, authorizeRoles('admin'), userController.createUser);
 
 // Read All Users
-router.get('/', verifyToken, authorizeRoles(1), userController.getAllUsers);
+router.get('/', verifyToken, authorizeRoles('user'), userController.getAllUsers);
 
 // Read User by ID
-router.get('/:id', verifyToken, authorizeRoles(1), userController.getUserById);
+router.get('/:id', verifyToken, authorizeRoles('admin'), userController.getUserById);
 
 // Update User
 router.put('/:id', verifyToken, authorizeRoles('admin'), userController.updateUser);

@@ -62,7 +62,7 @@ const authController = {
             const token = jwt.sign(
                 { id: user.id, email: user.email, roleName: user.role.nama },
                 process.env.JWT_SECRET,
-                { expiresIn: '1h' }
+                { expiresIn: process.env.JWT_EXPIRATION }
             );
 
             req.user = {
@@ -75,7 +75,7 @@ const authController = {
             res.cookie('token', token, {
                 httpOnly: true, // Prevent client-side JS access
                 //secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-                maxAge: 3600000, // Token valid for 1 hour
+                maxAge: parseInt(process.env.COOKIE_MAX_AGE, 10), // Token valid for 1 hour
                 sameSite: 'strict', // CSRF protection
             });
 

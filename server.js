@@ -25,4 +25,4 @@ app.use('/api/users', userRoutes); // Use user routes
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-console.log(date.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));
+console.log(date.toLocaleString('en-US', process.env.TZ));

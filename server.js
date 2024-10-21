@@ -5,11 +5,13 @@ const cors = require('cors');
 const sequelize = require('./config/config');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const date = new Date();
 
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const wibDate = date;
 
 // Middleware
 app.use(cors());
@@ -22,5 +24,5 @@ app.use('/api/users', userRoutes); // Use user routes
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-console.log('Server running with timezone:', process.env.TZ);
-console.log('Current date/time (UTC+7):', new Date().toString());
+
+console.log(date.toLocaleString('en-US', { timeZone: 'Asia/Bangkok' }));

@@ -5,6 +5,7 @@ const cors = require('cors');
 const sequelize = require('./config/config');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const cookieParse = require('cookie-parser');
 const date = new Date();
 
 require('dotenv').config();
@@ -16,7 +17,7 @@ const wibDate = date;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(cookieParse());
 
 // Routes
 app.use('/api/auth', authRoutes);

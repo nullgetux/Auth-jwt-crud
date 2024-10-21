@@ -40,24 +40,35 @@ const authController = {
                 include: [{ model: Roles, attributes: ['nama'], as: 'role' }]
              });
             if (!user) {
-                return res.status(401).json({ error: 'Invalid credentials' });
+                return res.status(401).json({ error: 'Email Not Register' });
             }
              // Compare password
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
+
            // Generate JWT token
             const token = jwt.sign(
                 { id: user.id, email: user.email, roleName: user.role.nama },
                 process.env.JWT_SECRET,
                 { expiresIn: '1h' }
             );
+
             req.user = {
                 id: user.id,
                 email: user.email,
                 roleName: user.role.name // Attach role name here
             };
+
+            // Set the token in a cookie
+            res.cookie('token', token, {
+                httpOnly: true, // Prevent client-side JS access
+                //secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+                maxAge: 3600000, // Token valid for 1 hour
+                sameSite: 'strict', // CSRF protection
+            });
+
             return res.status(200).json({ message: 'Login successful', token });
         } catch (error) {
             return res.status(400).json({ error: 'Login failed', details: error.message });

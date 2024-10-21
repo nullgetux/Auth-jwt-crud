@@ -8,14 +8,24 @@ const saltRounds = 10;
 const authController = {
     // Register
     register: async (req, res) => {
-        const { nama, password, email } = req.body;
+        const { nama, password, email, roleId } = req.body;
         try {
+            // Check if the email already exists in the database
+            const existingUser = await Users.findOne({ where: { email } });
+            if (existingUser) {
+                return res.status(400).json({
+                    error: 'Registration failed',
+                    details: 'Email already in use'
+                });
+            }
+    
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const user = await Users.create(
                 { 
                     nama, 
                     password: hashedPassword, 
-                    email 
+                    email,
+                    roleId
                 });
             res.status(201).json(
                 { message: 'User registered successfully', 

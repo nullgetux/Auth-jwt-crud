@@ -22,3 +22,5 @@ app.use('/api/users', userRoutes); // Use user routes
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+console.log('Server running with timezone:', process.env.TZ);
+console.log('Current date/time (UTC+7):', new Date().toString());

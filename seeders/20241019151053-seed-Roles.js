@@ -12,7 +12,7 @@ module.exports = {
     },
     {
       id: 2,
-      nama: 'pengguna',
+      nama: 'user',
       createdAt: new Date(),
       updatedAt: new Date()
       }

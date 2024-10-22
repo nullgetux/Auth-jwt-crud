@@ -79,7 +79,7 @@ const authController = {
                 sameSite: 'strict', // CSRF protection
             });
 
-            return res.status(200).json({ message: 'Login successful', token });
+            return res.status(200).json({ message: 'Login successful' });
         } catch (error) {
             return res.status(400).json({ error: 'Login failed', details: error.message });
         }
@@ -87,7 +87,12 @@ const authController = {
 
     // Logout (just a placeholder)
     logout: (req, res) => {
-        res.clearCookie('token');
+        // Clear the 'token' cookie
+        res.clearCookie('token', {
+            httpOnly: true, // Same options used when the cookie was set
+            //secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
+            sameSite: 'strict',
+        });
         res.status(200).json(
             { 
                 message: 'Logged out successfully' 

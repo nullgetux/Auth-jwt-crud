@@ -75,7 +75,7 @@ const authController = {
             res.cookie('token', token, {
                 httpOnly: true, // Prevent client-side JS access
                 //secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-                maxAge: parseInt(process.env.COOKIE_MAX_AGE, 10), // Token valid for 1 hour
+                maxAge: parseInt(process.env.COOKIE_MAX_AGE, 10), 
                 sameSite: 'strict', // CSRF protection
             });
 

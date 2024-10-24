@@ -7,7 +7,6 @@ module.exports = {
     const hashedPassword = await bcrypt.hash('12341234', 10); // Hash password
     await queryInterface.bulkInsert('users', [
       {
-      id: 1,
       nama: 'admin',
       password: hashedPassword, // Gunakan password yang sudah di-hash
       email: 'admin@gmail.com', // Perbaiki typo di email
@@ -16,7 +15,6 @@ module.exports = {
       updatedAt: new Date()
     },
     {
-      id: 2,
       nama: 'John Doe',
       password: hashedPassword, // Gunakan password yang sudah di-hash
       email: 'slamet@gmail.com', // Perbaiki typo di email
@@ -25,7 +23,6 @@ module.exports = {
       updatedAt: new Date()
       },
       {
-        id: 3,
         nama: 'ujang',
         password: hashedPassword, // Gunakan password yang sudah di-hash
         email: 'ujang@gmail.com', // Perbaiki typo di email
@@ -37,6 +34,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('users', { id: [1,2,3] }, {});
+    await queryInterface.bulkDelete('users', null, {});
   }
 };

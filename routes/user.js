@@ -8,18 +8,18 @@ const authorizeRoles = require('../middleware/authorizeRoles');
 const router = express.Router();
 
 // Create User
-router.post('/', verifyToken, authorizeRoles('admin'), userController.createUser);
+router.post('/', verifyToken, authorizeRoles('createUser','Users'), userController.createUser);
 
 // Read All Users
-router.get('/', verifyToken, authorizeRoles('user'), userController.getAllUsers);
+router.get('/', verifyToken, authorizeRoles('getAllUsers','Users'), userController.getAllUsers);
 
 // Read User by ID
-router.get('/:id', verifyToken, authorizeRoles('admin'), userController.getUserById);
+router.get('/:id', verifyToken, authorizeRoles('getUserById','Users'), userController.getUserById);
 
 // Update User
-router.put('/:id', verifyToken, authorizeRoles('admin'), userController.updateUser);
+router.put('/:id', verifyToken, authorizeRoles('updateUser','Users'), userController.updateUser);
 
 // Delete User
-router.delete('/:id', verifyToken, authorizeRoles('admin'), userController.deleteUser);
+router.delete('/:id', verifyToken, authorizeRoles('deleteUser','Users'), userController.deleteUser);
 
 module.exports = router;

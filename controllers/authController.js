@@ -18,6 +18,9 @@ const authController = {
                     details: 'Email already in use'
                 });
             }
+
+            // Set default roleId to 2 if not provided
+            const finalRoleId = roleId || 2;
     
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const user = await Users.create(
@@ -25,7 +28,7 @@ const authController = {
                     nama, 
                     password: hashedPassword, 
                     email,
-                    roleId
+                    roleId: finalRoleId
                 });
             res.status(201).json(
                 { message: 'User registered successfully', 

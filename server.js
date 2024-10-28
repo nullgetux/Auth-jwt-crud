@@ -15,7 +15,11 @@ const PORT = process.env.PORT || 3000;
 const wibDate = date;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3002', // Change this to your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+    credentials: true, // If you need to allow cookies
+}));
 app.use(bodyParser.json());
 app.use(cookieParse());
 

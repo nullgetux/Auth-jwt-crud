@@ -34,7 +34,16 @@ const userController = {
     // Read All Users
     getAllUsers: async (req, res) => {
         try {
-            const users = await Users.findAll();
+            const users = await Users.findAll({
+                include: [
+                    {
+                        model:Roles,
+                        as: 'role',
+                        attributes: ['nama'],
+                    }
+                ],
+                attributes: ['id','nama','email']
+            });
             res.status(200).json(users);
         } catch (error) {
             res.status(400).json({ error: 'Failed to retrieve users', details: error.message });

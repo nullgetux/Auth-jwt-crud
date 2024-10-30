@@ -76,13 +76,14 @@ const authController = {
 
             // Set the token in a cookie
             res.cookie('token', token, {
-                httpOnly: true, // Prevent client-side JS access
+                path: '/',
+                httpOnly: false, // Prevent client-side JS access
                 //secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
                 maxAge: parseInt(process.env.COOKIE_MAX_AGE, 10), 
-                sameSite: 'strict', // CSRF protection
+                sameSite: 'lax', // CSRF protection
             });
 
-            return res.status(200).json({ message: 'Login successful' });
+            return res.status(200).json({ message: 'Login successful', token });
         } catch (error) {
             return res.status(400).json({ error: 'Login failed', details: error.message });
         }
@@ -92,9 +93,10 @@ const authController = {
     logout: (req, res) => {
         // Clear the 'token' cookie
         res.clearCookie('token', {
-            httpOnly: true, // Same options used when the cookie was set
+            path: '/',
+            httpOnly: false, // Same options used when the cookie was set
             //secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-            sameSite: 'strict',
+            sameSite: 'lax',
         });
         res.status(200).json(
             { 

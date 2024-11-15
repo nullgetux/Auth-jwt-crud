@@ -74,9 +74,9 @@ const userController = {
     // Update User
     updateUser: async (req, res) => {
         const { id } = req.params;
-        const { nama, password, email } = req.body;
+        const { nama, password, email, roleId } = req.body;
         try {
-            const user = await User.findByPk(id);
+            const user = await Users.findByPk(id);
             if (!user) {
                 return res.status(404).json(
                     { 

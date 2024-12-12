@@ -5,6 +5,7 @@ const cors = require('cors');
 const sequelize = require('./config/config');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const digiflazRoutes = require('./routes/digiflaz');
 const cookieParse = require('cookie-parser');
 const date = new Date();
 
@@ -27,6 +28,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); // Use user routes
+app.use('/api/product', digiflazRoutes);
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

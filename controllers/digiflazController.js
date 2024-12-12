@@ -93,7 +93,6 @@ class DigiflazController {
       res.status(200).json({
         success: true,
         message: 'Products fetched and stored successfully',
-        data: products,
       });
     } catch (error) {
       console.error('Error fetching or saving products:', error);
@@ -120,7 +119,6 @@ class DigiflazController {
       res.status(200).json({
         success: true,
         message: 'Products fetched and stored successfully',
-        data: products,
       });
     } catch (error) {
       console.error('Error fetching or saving products:', error);

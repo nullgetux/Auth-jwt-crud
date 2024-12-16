@@ -22,6 +22,7 @@ module.exports = {
       transaction_reference: {
         type: Sequelize.STRING,
         allowNull: true,
+        unique: true,
       },
       transaction_type: {
         type: Sequelize.STRING,

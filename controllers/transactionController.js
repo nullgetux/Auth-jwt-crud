@@ -1,4 +1,6 @@
-const { transactions } = require('../models'); // Import the correct model
+const fetch = require('node-fetch');
+const crypto = require('crypto');
+const { transactions } = require('../models'); 
 
 class transactionController {
     // Function to generate a random and unique trans_no
@@ -7,46 +9,83 @@ class transactionController {
             let trans_no;
             let isUnique = false;
 
-            // Keep generating random trans_no until it's unique
-            while (!isUnique) {
-                // Generate a random 6-digit trans_no
-                const randomNumber = Math.floor(Math.random() * 1000000); // Random number between 0 and 999999
-                trans_no = randomNumber.toString().padStart(7, '0'); // Ensure 6 digits
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
 
-                // Check if the trans_no already exists in the transactions table
+            while (!isUnique) {
+                const sequenceNumber = Math.floor(Math.random() * 1000000);
+                const formattedSequenceNumber = sequenceNumber.toString().padStart(7, '0');
+                trans_no = `INV-PR-${year}-${month}-${formattedSequenceNumber}`;
+
                 const existingTransaction = await transactions.findOne({
                     where: { trans_no: trans_no },
                 });
 
-                // If no existing transaction with this trans_no, it's unique
                 if (!existingTransaction) {
                     isUnique = true;
                 }
             }
 
-            return trans_no; // Return the unique trans_no
+            return trans_no;
         } catch (error) {
             console.error('Error generating trans_no:', error);
             throw new Error('Unable to generate trans_no');
         }
     }
 
+    // Function to generate a random and unique reference
+    static async generateReference() {
+        try {
+            let refid;
+
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+
+            const sequenceNumber = Math.floor(Math.random() * 1000000);
+            const formattedSequenceNumber = sequenceNumber.toString().padStart(10, '0');
+            refid = formattedSequenceNumber;  // Corrected to assign formattedSequenceNumber to refid
+
+            return refid;  // Return refid instead of trans_no
+        } catch (error) {
+            console.error('Error generating reference:', error);
+            throw new Error('Unable to generate reference');
+        }
+    }
+
     // Topup function that uses the generateTransNo method
     static async topup(req, res) {
         try {
-            const trans_no = await transactionController.generateTransNo(); // Get the unique random trans_no
-            
-            // Here, you can create a new transaction in the database if needed
-            await transactions.create({
+            const { amount, user_id, product_code } = req.body;
+
+            // Generate unique transaction number
+            const trans_no = await transactionController.generateTransNo();
+            // Generate unique reference ID
+            const ref_id = await transactionController.generateReference();
+
+            // Create transaction record in the database
+            const newTransaction = await transactions.create({
                 trans_no: trans_no,
-                transaction_status: 'pending', // Example status
-                transaction_type: 'topup', // Example type
-                transaction_amount: 100, // Example amount
-                transaction_userid: req.body.user_id || 1, // Example user ID (replace with actual value)
+                transaction_reference: ref_id,
+                transaction_status: 'pending',
+                transaction_type: 'topup',
+                transaction_amount: amount || 0,
+                transaction_userid: user_id || 1,
             });
 
-            res.json({ trans_no: trans_no }); // Return the generated trans_no as JSON response
+            
+
+            // Update transaction based on DigiFlazz response
+            if (response.status === 'success') {
+                await newTransaction.update({ transaction_status: 'completed' });
+                res.json({ success: true, trans_no: trans_no, message: 'Topup successful!' });
+            } else {
+                await newTransaction.update({ transaction_status: 'failed' });
+                res.status(500).json({ error: 'Topup failed', details: response });
+            }
         } catch (error) {
+            console.error('Topup error:', error);
             res.status(500).json({ error: 'Internal Server Error' });
         }
     }

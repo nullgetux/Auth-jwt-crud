@@ -18,11 +18,14 @@ module.exports = (sequelize, DataTypes) => {
   transactions.init({
       trans_no: DataTypes.STRING,
       transaction_status: DataTypes.STRING,
+      transaction_reference: DataTypes.STRING,
       transaction_type: DataTypes.STRING,
       product_provider: DataTypes.STRING,
       transaction_amount: DataTypes.INTEGER,
+      seller_price: DataTypes.INTEGER,
       product_sku: DataTypes.STRING,
-      transaction_reference: DataTypes.STRING,
+      customer_no: DataTypes.STRING,
+      transaction_sn: DataTypes.STRING,
       transaction_message: DataTypes.STRING,
       transaction_userid: DataTypes.INTEGER,
   }, {

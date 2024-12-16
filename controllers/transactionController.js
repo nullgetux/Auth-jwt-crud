@@ -57,7 +57,7 @@ class transactionController {
     // Topup function that uses the generateTransNo method
     static async topup(req, res) {
         try {
-            const { amount, user_id, product_code } = req.body;
+            const { amount, user_id, product_sku, customer_no } = req.body;
 
             // Generate unique transaction number
             const trans_no = await transactionController.generateTransNo();
@@ -72,9 +72,9 @@ class transactionController {
                 transaction_type: 'topup',
                 transaction_amount: amount || 0,
                 transaction_userid: user_id || 1,
+                customer_no: customer_no || 1,
+                product_sku: product_sku,
             });
-
-            
 
             // Update transaction based on DigiFlazz response
             if (response.status === 'success') {

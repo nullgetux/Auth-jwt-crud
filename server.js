@@ -6,6 +6,7 @@ const sequelize = require('./config/config');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const digiflazRoutes = require('./routes/digiflaz');
+const transactionRoutes = require('./routes/transaction');
 const cookieParse = require('cookie-parser');
 const date = new Date();
 
@@ -29,6 +30,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); // Use user routes
 app.use('/api/digi', digiflazRoutes);
+app.use('/api/topup', transactionRoutes);
+
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

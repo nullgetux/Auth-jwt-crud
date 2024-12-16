@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // Define the association
-      prefixNumbers.hasMany(models.productPrepaids, { foreignKey: 'product_provider', as: 'prepaids' });
+      prefixNumbers.hasMany(models.productPrepaids, { 
+        foreignKey: 'provider', 
+        as: 'prepaids' });
     }
   }
 

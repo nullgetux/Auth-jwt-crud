@@ -28,7 +28,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes); // Use user routes
-app.use('/api/product', digiflazRoutes);
+app.use('/api/digi', digiflazRoutes);
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

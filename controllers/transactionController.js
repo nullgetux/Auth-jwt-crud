@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const crypto = require('crypto');
-const { transactions } = require('../models'); 
+const { transactions, productPrepaids, productPascas } = require('../models'); 
 
 class transactionController {
     // Function to generate a random and unique trans_no
@@ -69,14 +69,16 @@ class transactionController {
                 trans_no: trans_no,
                 transaction_reference: ref_id,
                 transaction_status: 'pending',
-                transaction_type: 'topup',
+                transaction_type: product_type,
                 transaction_amount: amount || 0,
                 transaction_userid: user_id || 1,
                 customer_no: customer_no || 1,
                 product_sku: product_sku,
+                product_provider: product_provider,
+                seller_price: seller_price,
+                
             });
 
-            // Update transaction based on DigiFlazz response
             if (response.status === 'success') {
                 await newTransaction.update({ transaction_status: 'completed' });
                 res.json({ success: true, trans_no: trans_no, message: 'Topup successful!' });

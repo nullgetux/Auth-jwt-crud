@@ -9,10 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Define the association
-      prefixNumbers.hasMany(models.productPrepaids, { 
-        foreignKey: 'provider', 
-        as: 'prepaids' });
+      prefixNumbers.belongsTo(models.productPrepaids, { 
+        foreignKey: 'product_provider', 
+        as: 'prefixproduct' });
     }
   }
 

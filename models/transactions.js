@@ -13,13 +13,16 @@ module.exports = (sequelize, DataTypes) => {
         transactions.belongsTo(models.Users, { 
             foreignKey: 'transaction_userid', 
             as: 'userid' });
+        transactions.belongsTo(models.productPrepaids, { 
+        foreignKey: 'product_provider', 
+        as: 'transactionprepaid' });
     }
   }
   transactions.init({
       trans_no: DataTypes.STRING,
       transaction_status: DataTypes.STRING,
       transaction_reference: DataTypes.STRING,
-      transaction_type: DataTypes.STRING,
+      transaction_category: DataTypes.STRING,
       product_provider: DataTypes.STRING,
       transaction_amount: DataTypes.INTEGER,
       seller_price: DataTypes.INTEGER,

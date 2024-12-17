@@ -56,40 +56,44 @@ class transactionController {
 
     // Topup function that uses the generateTransNo method
     static async topup(req, res) {
+        const { product_sku, customer_no, amount} = req.body;
         try {
-            const { amount, user_id, product_sku, customer_no } = req.body;
-
+            
             // Generate unique transaction number
             const trans_no = await transactionController.generateTransNo();
             // Generate unique reference ID
             const ref_id = await transactionController.generateReference();
+
+            const product = await productPrepaids.findOne({ where: { product_sku } });
+
+            if (!product) {
+                return res.status(404).json({ error: 'Produk tidak ditemukan' });
+              }
 
             // Create transaction record in the database
             const newTransaction = await transactions.create({
                 trans_no: trans_no,
                 transaction_reference: ref_id,
                 transaction_status: 'pending',
-                transaction_type: product_type,
+                transaction_category: product.product_category,
+                product_provider: product.product_provider,
                 transaction_amount: amount || 0,
-                transaction_userid: user_id || 1,
-                customer_no: customer_no || 1,
+                seller_price: product.product_seller_price || 0,
                 product_sku: product_sku,
-                product_provider: product_provider,
-                seller_price: seller_price,
+                customer_no: customer_no || 1,
+                transaction_sn: '1123123123123123123123',
+                transaction_message: '1231231231231231231231',
+                transaction_userid: '1',
                 
             });
 
-            if (response.status === 'success') {
-                await newTransaction.update({ transaction_status: 'completed' });
-                res.json({ success: true, trans_no: trans_no, message: 'Topup successful!' });
-            } else {
-                await newTransaction.update({ transaction_status: 'failed' });
-                res.status(500).json({ error: 'Topup failed', details: response });
+            // Kembalikan respon dengan data transaksi yang baru saja dibuat
+            return res.status(201).json(newTransaction);
+            } catch (error) {
+            // Tangani error jika terjadi
+            console.error(error);
+            return res.status(500).json({ error: 'Terjadi kesalahan pada server' });
             }
-        } catch (error) {
-            console.error('Topup error:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
     }
 }
 

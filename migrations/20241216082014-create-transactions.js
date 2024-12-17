@@ -24,7 +24,7 @@ module.exports = {
         allowNull: true,
         unique: true,
       },
-      transaction_type: {
+      transaction_category: {
         type: Sequelize.STRING,
         allowNull: true,
       },

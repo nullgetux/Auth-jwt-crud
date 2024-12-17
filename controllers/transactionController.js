@@ -95,15 +95,15 @@ class transactionController {
 
             const product = await productPrepaids.findOne({ where: { product_sku } });
 
-            if (!product) {
-                return res.status(404).json({ error: 'Produk tidak ditemukan' });
-              }
+            //if (!product) {
+              //  return res.status(404).json({ error: 'Produk tidak ditemukan' });
+              //}
 
             // Create transaction record in the database
             const newTransaction = await transactions.create({
                 trans_no: trans_no,
                 transaction_reference: ref_id,
-                transaction_status: product.product_status,
+                transaction_status: "product.product_status",
                 transaction_category: product.product_category,
                 product_provider: product.product_provider,
                 transaction_amount: amount || 0,
@@ -127,6 +127,7 @@ class transactionController {
             const updatedTransaction = await newTransaction.update({
                 transaction_status: digiFlazzResponse.data.status, // "pending", "success", atau "failed"
                 transaction_message: digiFlazzResponse.data.message || 'Respon tidak ada',
+                seller_price: digiFlazzResponse.data.price || 'Respon tidak ada',
                 transaction_sn: digiFlazzResponse.data.sn || 'N/A',
             });
 

@@ -30,4 +30,4 @@ npx sequelize-cli db:migrate
 npx sequelize-cli seed:generate --name name
 
 ## Run seed
-npx sequelize-cli db:seed:all
+npm run seed
